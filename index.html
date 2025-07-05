@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEVADA - Helados Artesanales</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#8A2BE2', secondary: '#4169E1' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0f0f1a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #541690);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite, zoomBG 15s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .snow-trail {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeOut 1s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes zoomBG {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: snowfall linear infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100%) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .logo-text {
+            font-family: 'Pacifico', serif;
+            animation: logoRotate 10s ease-in-out infinite;
+        }
+
+        @keyframes logoRotate {
+
+            0%,
+            100% {
+                transform: rotateY(0deg);
+            }
+
+            50% {
+                transform: rotateY(3deg);
+            }
+        }
+
+        .hero-title {
+            background: linear-gradient(90deg, #8A2BE2, #4169E1, #9370DB, #8A2BE2);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 8s ease infinite;
+        }
+
+        @keyframes gradientText {
+            0% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .animated-border-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .animated-border-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8A2BE2, #4169E1);
+            animation: animateBorder 3s linear infinite;
+        }
+
+        @keyframes animateBorder {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .animated-border-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .flavor-card {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .flavor-card:hover {
+            transform: rotateY(15deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(138, 43, 226, 0.3);
+        }
+
+        .flavor-card img {
+            transition: all 0.5s ease;
+        }
+
+        .flavor-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(138, 43, 226, 0.2), rgba(65, 105, 225, 0.2));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #8A2BE2, #4169E1) border-box;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+
+        .gallery-item img {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1) rotate(-2deg);
+            filter: brightness(1.1);
+        }
+
+        .gallery-item:hover::before,
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .counter-value {
+            display: inline-block;
+        }
+
+        .history-line {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-line:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8A2BE2, #4169E1);
+            animation: historyLine 3s ease-in-out forwards;
+        }
+
+        @keyframes historyLine {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) rotate(10deg);
+            color: #8A2BE2;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8A2BE2, #4169E1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            25% {
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0.8;
+            }
+
+            75% {
+                opacity: 0.5;
+            }
+        }
+
+        .modal {
+            transition: all 0.5s ease;
+            transform: scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.active {
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay {
+            transition: all 0.5s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .staggered-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #8A2BE2;
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="floating-particles" id="particles"></div>
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-opacity-80 backdrop-blur-md bg-[#0f0f1a] transition-all duration-300"
+        id="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="logo-text text-3xl font-['Pacifico'] text-white mr-2">Nevada</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#inicio" class="nav-link text-white hover:text-primary font-medium">Inicio</a>
+                <a href="#sabores" class="nav-link text-white hover:text-primary font-medium">Sabores</a>
+                <a href="#galeria" class="nav-link text-white hover:text-primary font-medium">Galería</a>
+                <a href="#historia" class="nav-link text-white hover:text-primary font-medium">Historia</a>
+                <a href="#contacto" class="nav-link text-white hover:text-primary font-medium">Contacto</a>
+            </nav>
+            <div class="md:hidden">
+                <button id="menu-toggle" class="w-10 h-10 flex items-center justify-center text-white">
+                    <i class="ri-menu-line ri-2x"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu"
+            class="fixed inset-0 bg-[#0f0f1a] bg-opacity-95 z-50 flex flex-col justify-center items-center hidden">
+            <button id="close-menu"
+                class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white">
+                <i class="ri-close-line ri-2x"></i>
+            </button>
+            <nav class="flex flex-col space-y-6 text-center">
+                <a href="#inicio"
+                    class="staggered-item nav-link text-white hover:text-primary text-2xl font-medium">Inicio</a>
+                <a href="#sabores"
+                    class="staggered-item nav-link text-white hover:text-primary text-2xl font-medium">Sabores</a>
+                <a href="#galeria"
+                    class="staggered-item nav-link text-white hover:text-primary text-2xl font-medium">Galería</a>
+                <a href="#historia"
+                    class="staggered-item nav-link text-white hover:text-primary text-2xl font-medium">Historia</a>
+                <a href="#contacto"
+                    class="staggered-item nav-link text-white hover:text-primary text-2xl font-medium">Contacto</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="inicio" class="relative min-h-screen flex items-center overflow-hidden">
+            <div class="gradient-bg absolute inset-0 z-0"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-40 z-10"></div>
+            <div class="container mx-auto px-4 relative z-20 py-20">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0">
+                        <h1 class="hero-title text-5xl md:text-7xl font-extrabold mb-6">NEVADA</h1>
+                        <h2 class="text-2xl md:text-3xl font-light mb-8 text-gray-200">Donde cada helado es una
+                            experiencia única, llena de frescura y sabor</h2>
+                        <p class="text-lg mb-10 text-gray-300 max-w-xl">Descubre nuestros helados artesanales elaborados
+                            con ingredientes naturales y técnicas tradicionales que preservan el auténtico sabor de cada
+                            ingrediente.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="#sabores"
+                                class="animated-border-button bg-primary hover:bg-opacity-90 text-white font-semibold py-3 px-8 !rounded-button whitespace-nowrap">Descubrir
+                                Sabores</a>
+                            <a href="#contacto"
+                                class="animated-border-button bg-transparent border-2 border-white hover:border-primary text-white font-semibold py-3 px-8 !rounded-button whitespace-nowrap">Contáctanos</a>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <div
+                            class="relative w-[500px] h-[500px] rounded-full overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-500 cursor-pointer hover:shadow-[0_0_50px_rgba(138,43,226,0.3)]">
+                            <img src="https://i.imgur.com/G5v1o0S.png"
+                                alt="Helado artesanal" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(138,43,226,0.2)] pointer-events-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="sabores" class="py-20 bg-[#0f0f1a]">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Nuestros Sabores Destacados</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">Elaboramos cada sabor con dedicación y los
+                        mejores ingredientes, creando experiencias únicas para tu paladar.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=Artisanal%20chocolate%20ice%20cream%20scoop%20with%20chocolate%20chunks%20and%20swirls%2C%20rich%20dark%20color%2C%20creamy%20texture%2C%20on%20a%20dark%20blue%20background%2C%20professional%20food%20photography%20with%20soft%20lighting%2C%20high-end%20commercial%20quality&width=500&height=400&seq=2&orientation=landscape"
+                                alt="Chocolate Intenso" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Chocolate Intenso</h3>
+                            <p class="text-gray-300 mb-4">Elaborado con cacao premium y trozos de chocolate belga, una
+                                experiencia intensa para los amantes del chocolate.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Bestseller</span>
+                                <div class="flavor-title-animation overflow-hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=Artisanal%20strawberry%20ice%20cream%20with%20real%20strawberry%20pieces%20visible%2C%20vibrant%20pink%20color%2C%20creamy%20texture%2C%20on%20a%20dark%20blue%20background%2C%20professional%20food%20photography%20with%20soft%20lighting%2C%20high-end%20commercial%20quality&width=500&height=400&seq=3&orientation=landscape"
+                                alt="Fresa Silvestre" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Fresa Silvestre</h3>
+                            <p class="text-gray-300 mb-4">Fresas frescas seleccionadas en su punto óptimo de maduración
+                                para un sabor natural e intenso.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Favorito</span>
+                                <div class="flavor-title-animation overflow-hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=Artisanal%20pistachio%20ice%20cream%20with%20visible%20pistachio%20pieces%2C%20light%20green%20color%2C%20creamy%20texture%2C%20on%20a%20dark%20blue%20background%2C%20professional%20food%20photography%20with%20soft%20lighting%2C%20high-end%20commercial%20quality&width=500&height=400&seq=4&orientation=landscape"
+                                alt="Pistacho Premium" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Pistacho Premium</h3>
+                            <p class="text-gray-300 mb-4">Pistachos tostados y molidos con precisión para lograr un
+                                sabor elegante y una textura inigualable.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Exclusivo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://readdy.ai/api/search-image?query=Artisanal%20vanilla%20ice%20cream%20with%20visible%20vanilla%20bean%20specks%2C%20creamy%20white%20color%2C%20smooth%20texture%2C%20on%20a%20dark%20blue%20background%2C%20professional%20food%20photography%20with%20soft%20lighting%2C%20high-end%20commercial%20quality&width=500&height=400&seq=5&orientation=landscape"
+                                alt="Vainilla de Madagascar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Vainilla de Madagascar</h3>
+                            <p class="text-gray-300 mb-4">Elaborado con auténticas vainas de vainilla de Madagascar para
+                                un aroma y sabor incomparables.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Clásico</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://i.imgur.com/tHGtagZ.png"
+                                alt="Caramelo Salado" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Caramelo</h3>
+                            <p class="text-gray-300 mb-4">El equilibrio perfecto entre dulce y salado, con caramelo
+                                hecho a mano y un toque de sal marina.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Tendencia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flavor-card bg-[#1a1a2e] rounded-xl overflow-hidden shadow-lg scroll-reveal">
+                        <div class="h-64 overflow-hidden">
+                            <img src="https://i.imgur.com/SIJ6jsi.png">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Helado de Mango</h3>
+                            <p class="text-gray-300 mb-4">Refrescante helado elaborado con mangos tropicales maduros,
+                                sin lácteos y con sabor intenso.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-semibold">Vegano</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <button
+                        class="animated-border-button bg-transparent border-2 border-primary text-white font-semibold py-3 px-8 !rounded-button whitespace-nowrap">Ver
+                        Todos los Sabores</button>
+                </div>
+            </div>
+        </section>
+        <section id="galeria" class="py-20 bg-[#16213e]">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Nuestra Galería</h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">Descubre la magia detrás de nuestros helados
+                        artesanales a través de imágenes que capturan su esencia.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="1">
+                        <img src="https://i.imgur.com/fCDtIJT.png"
+                            alt="Interior de la heladería" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="2">
+                        <img src="https://i.imgur.com/TKAIEJV.png"
+                            alt="Proceso de elaboración" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="3">
+                        <img src="https://i.imgur.com/EDufpXb.png"
+                            alt="Sundae especial" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="4">
+                        <img src="https://i.imgur.com/6YufGh6.png"
+                            alt="Servicio de helados" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="5">
+                        <img src="https://i.imgur.com/1dXnQO3.png"
+                            alt="Ingredientes frescos" class="w-full h-64 object-cover">
+                    </div>
+                    <div class="gallery-item rounded-xl overflow-hidden cursor-pointer scroll-reveal" data-img="6">
+                        <img src="https://i.imgur.com/8x94K1g.png"
+                            alt="Clientes disfrutando" class="w-full h-64 object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div id="modal-overlay"
+            class="modal-overlay fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+            <div id="modal" class="modal bg-[#0f0f1a] max-w-4xl w-11/12 rounded-xl overflow-hidden relative">
+                <button id="close-modal"
+                    class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-white bg-black bg-opacity-50 rounded-full">
+                    <i class="ri-close-line ri-xl"></i>
+                </button>
+                <div class="p-2">
+                    <img id="modal-img" src="" alt="Imagen ampliada" class="w-full h-auto rounded-lg">
+                </div>
+            </div>
+        </div>
+        <section id="estadisticas" class="py-16 bg-[#0f0f1a]">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-[#1a1a2e] p-8 rounded-xl shadow-lg scroll-reveal">
+                        <div class="text-5xl font-bold text-primary mb-4">
+                            <span class="counter-value" data-count="25">0</span>+
+                        </div>
+                        <h3 class="text-xl font-semibold">Sabores Únicos</h3>
+                        <p class="text-gray-300 mt-2">Creaciones exclusivas para todos los gustos</p>
+                    </div>
+                    <div class="bg-[#1a1a2e] p-8 rounded-xl shadow-lg scroll-reveal">
+                        <div class="text-5xl font-bold text-primary mb-4">
+                            <span class="counter-value" data-count="10">0</span>+
+                        </div>
+                        <h3 class="text-xl font-semibold">Años de Tradición</h3>
+                        <p class="text-gray-300 mt-2">Perfeccionando nuestras recetas desde 2015</p>
+                    </div>
+                    <div class="bg-[#1a1a2e] p-8 rounded-xl shadow-lg scroll-reveal">
+                        <div class="text-5xl font-bold text-primary mb-4">
+                            <span class="counter-value" data-count="98">0</span>%
+                        </div>
+                        <h3 class="text-xl font-semibold">Ingredientes Naturales</h3>
+                        <p class="text-gray-300 mt-2">Comprometidos con la calidad y autenticidad</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="historia" class="py-20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#0f3460] via-[#541690] to-[#0f3460] opacity-90"></div>
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="w-full md:w-1/2 mb-10 md:mb-0 scroll-reveal">
+                        <img src="https://readdy.ai/api/search-image?query=Elegant%20ice%20cream%20shop%20founders%2C%20professional%20portrait%20of%20diverse%20business%20owners%20in%20a%20stylish%20ice%20cream%20parlor%20with%20dark%20blue%20lighting%2C%20warm%20and%20inviting%20atmosphere%2C%20professional%20business%20photography&width=600&height=500&seq=14&orientation=landscape"
+                            alt="Fundadores de Nevada" class="rounded-2xl shadow-2xl max-w-full h-auto">
+                    </div>
+                    <div class="w-full md:w-1/2 md:pl-12 scroll-reveal">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6">Nuestra Historia</h2>
+                        <div class="history-line w-24 h-1 bg-primary mb-8"></div>
+                        <p class="text-lg mb-6 text-gray-200">NEVADA nació en 2015 de la pasión de dos amigos por los
+                            helados artesanales. Tras años de experimentación y viajes por el mundo para conocer las
+                            mejores técnicas, decidimos crear nuestra propia heladería con un enfoque en ingredientes
+                            naturales y procesos tradicionales.</p>
+                        <p class="text-lg mb-8 text-gray-200">Hoy, continuamos innovando mientras mantenemos el espíritu
+                            artesanal que nos caracteriza. Cada helado es una obra de arte creada con dedicación y
+                            respeto por los sabores auténticos.</p>
+                        <button
+                            class="animated-border-button bg-transparent border-2 border-white hover:border-primary text-white font-semibold py-3 px-8 !rounded-button whitespace-nowrap">Conoce
+                            Más</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contacto" class="py-20 bg-[#541690]">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Contáctanos</h2>
+                    <p class="text-xl text-gray-200 max-w-3xl mx-auto">¿Tienes alguna pregunta o sugerencia? Estamos
+                        aquí para atenderte.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-10 md:items-start">
+                    <!-- Información de contacto -->
+                    <div class="w-full md:w-1/2 scroll-reveal">
+                        <div class="bg-[#1a1a2e] p-8 rounded-xl shadow-lg h-full flex flex-col justify-between">
+                            <h3 class="text-2xl font-bold mb-6">Información de Contacto</h3>
+                            <div class="mb-8">
+                                <div class="flex items-start mb-4">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4">
+                                        <i class="ri-map-pin-line ri-lg text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Dirección</h4>
+                                        <p class="text-gray-300">Cra. 43A #7-50, Medellín, Colombia</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start mb-4">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4">
+                                        <i class="ri-phone-line ri-lg text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Teléfono</h4>
+                                        <p class="text-gray-300">+57 312 264 4682</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start mb-4">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4">
+                                        <i class="ri-mail-line ri-lg text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Email</h4>
+                                        <p class="text-gray-300">info@nevada-helados.com</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div
+                                        class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4">
+                                        <i class="ri-time-line ri-lg text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-1">Horario</h4>
+                                        <p class="text-gray-300">Lunes a Domingo: 12:00 - 22:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4">Síguenos</h3>
+                            <div class="flex space-x-4">
+                                <a href="#"
+                                    class="social-icon w-10 h-10 flex items-center justify-center bg-[#0f0f1a] rounded-full text-white hover:text-primary">
+                                    <i class="ri-instagram-line ri-lg"></i>
+                                </a>
+                                <a href="#"
+                                    class="social-icon w-10 h-10 flex items-center justify-center bg-[#0f0f1a] rounded-full text-white hover:text-primary">
+                                    <i class="ri-facebook-line ri-lg"></i>
+                                </a>
+                                <a href="#"
+                                    class="social-icon w-10 h-10 flex items-center justify-center bg-[#0f0f1a] rounded-full text-white hover:text-primary">
+                                    <i class="ri-twitter-x-line ri-lg"></i>
+                                </a>
+                                <a href="#"
+                                    class="social-icon w-10 h-10 flex items-center justify-center bg-[#0f0f1a] rounded-full text-white hover:text-primary">
+                                    <i class="ri-whatsapp-line ri-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mapa alineado arriba y a la derecha -->
+                    <div class="w-full md:w-1/2 scroll-reveal flex items-start justify-end">
+                        <div
+                            class="bg-[#1a1a2e] p-4 md:p-6 rounded-2xl shadow-2xl w-full md:w-[420px] h-[340px] flex flex-col items-center">
+                            <h3 class="text-2xl font-bold mb-4">Ubicación</h3>
+                            <div class="relative w-full h-56 rounded-xl overflow-hidden mb-3 shadow-lg">
+                                <iframe
+                                    src="https://www.google.com/maps?q=Cra.+43A+%237-50,+Medell%C3%ADn,+Colombia&output=embed"
+                                    width="100%" height="100%" style="border:0; min-height:220px; border-radius: 16px;"
+                                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    title="Ubicación Nevada Helados"></iframe>
+                            </div>
+                            <p class="text-gray-300 text-center text-sm">Visítanos en nuestra heladería y disfruta de
+                                una experiencia única.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-[#0f0f1a] py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-6 md:mb-0">
+                    <h1 class="logo-text text-3xl font-['Pacifico'] text-white mb-2">Nevada</h1>
+                    <p class="text-gray-400">Helados Artesanales desde 2015</p>
+                </div>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#inicio" class="text-gray-300 hover:text-primary">Inicio</a>
+                    <a href="#sabores" class="text-gray-300 hover:text-primary">Sabores</a>
+                    <a href="#galeria" class="text-gray-300 hover:text-primary">Galería</a>
+                    <a href="#historia" class="text-gray-300 hover:text-primary">Historia</a>
+                    <a href="#contacto" class="text-gray-300 hover:text-primary">Contacto</a>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="social-icon w-10 h-10 flex items-center justify-center bg-[#1a1a2e] rounded-full text-white hover:text-primary">
+                            <i class="ri-instagram-line ri-lg"></i>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 flex items-center justify-center bg-[#1a1a2e] rounded-full text-white hover:text-primary">
+                            <i class="ri-facebook-line ri-lg"></i>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 flex items-center justify-center bg-[#1a1a2e] rounded-full text-white hover:text-primary">
+                            <i class="ri-twitter-x-line ri-lg"></i>
+                        </a>
+                        <a href="#"
+                            class="social-icon w-10 h-10 flex items-center justify-center bg-[#1a1a2e] rounded-full text-white hover:text-primary">
+                            <i class="ri-whatsapp-line ri-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2025 NEVADA - Helados Artesanales. Todos los
+                    derechos reservados.</p>
+                <p class="text-gray-400 text-sm">Sitio desarrollado por Clicka Studio – 2025</p>
+            </div>
+        </div>
+    </footer>
+    <script id="particles-script">
+        const initParticles = () => {
+            try {
+                const particlesContainer = document.getElementById('particles');
+                if (!particlesContainer) return;
+                const createParticle = () => {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    const size = Math.random() * 6 + 2;
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100;
+                    const delay = Math.random() * 5;
+                    const duration = 15 + Math.random() * 10;
+                    Object.assign(particle.style, {
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${posX}%`,
+                        top: `${posY}%`,
+                        opacity: '0',
+                        animationDelay: `${delay}s`,
+                        animationDuration: `${duration}s`
+                    });
+                    return particle;
+                };
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < 30; i++) {
+                    fragment.appendChild(createParticle());
+                }
+                particlesContainer.appendChild(fragment);
+            } catch (error) {
+                console.warn('Error initializing particles:', error);
+            }
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initParticles);
+        } else {
+            initParticles();
+        }
+    </script>
+    <script id="navigation-script">
+        const initNavigation = () => {
+            try {
+                const navbar = document.getElementById('navbar');
+                const heroSection = document.querySelector('#inicio');
+                if (!navbar || !heroSection) {
+                    console.warn('Navigation elements not found');
+                    return;
+                }
+                const trails = new Set();
+                const maxTrails = 15;
+                heroSection.addEventListener('mousemove', (e) => {
+                    const trail = document.createElement('div');
+                    trail.className = 'snow-trail';
+                    trail.style.left = e.pageX + 'px';
+                    trail.style.top = e.pageY + 'px';
+                    document.body.appendChild(trail);
+                    trails.push(trail);
+                    if (trails.length > maxTrails) {
+                        const oldTrail = trails.shift();
+                        oldTrail.remove();
+                    }
+                    setTimeout(() => {
+                        const index = trails.indexOf(trail);
+                        if (index > -1) {
+                            trails.splice(index, 1);
+                            trail.remove();
+                        }
+                    }, 1000);
+                });
+                function createSnowflake() {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    snowflake.style.left = Math.random() * 100 + '%';
+                    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    snowflake.style.opacity = Math.random();
+                    snowflake.style.width = snowflake.style.height = (Math.random() * 4 + 2) + 'px';
+                    heroSection.appendChild(snowflake);
+                    setTimeout(() => snowflake.remove(), 5000);
+                }
+                setInterval(createSnowflake, 100);
+                heroSection.addEventListener('mousemove', (e) => {
+                    const rect = heroSection.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / heroSection.clientWidth) * 100;
+                    const y = ((e.clientY - rect.top) / heroSection.clientHeight) * 100;
+                    heroSection.style.setProperty('--mouse-x', `${x}%`);
+                    heroSection.style.setProperty('--mouse-y', `${y}%`);
+                });
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+                const menuToggle = document.getElementById('menu-toggle');
+                const closeMenu = document.getElementById('close-menu');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const navLinks = document.querySelectorAll('.nav-link');
+                if (!menuToggle || !closeMenu || !mobileMenu) {
+                    console.warn('Mobile menu elements not found');
+                    return;
+                }
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('py-2');
+                        navbar.classList.remove('py-4');
+                        navbar.classList.add('shadow-lg');
+                    } else {
+                        navbar.classList.remove('py-2');
+                        navbar.classList.add('py-4');
+                        navbar.classList.remove('shadow-lg');
+                    }
+                });
+                menuToggle.addEventListener('click', function () {
+                    mobileMenu.classList.remove('hidden');
+                    const staggeredItems = document.querySelectorAll('.staggered-item');
+                    staggeredItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100 * index);
+                    });
+                });
+                closeMenu.addEventListener('click', function () {
+                    const staggeredItems = document.querySelectorAll('.staggered-item');
+                    staggeredItems.forEach((item) => {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                    });
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                });
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetSection = document.querySelector(targetId);
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        if (mobileMenu.classList.contains('hidden') === false) {
+                            closeMenu.click();
+                        }
+                    });
+                });
+            } catch (error) {
+                console.warn('Error in navigation script:', error);
+            }
+        });
+    </script>
+    <script id="gallery-modal-script">
+        const initGalleryModal = () => {
+            try {
+                const elements = {
+                    items: document.querySelectorAll('.gallery-item'),
+                    overlay: document.getElementById('modal-overlay'),
+                    modal: document.getElementById('modal'),
+                    img: document.getElementById('modal-img'),
+                    close: document.getElementById('close-modal')
+                };
+                if (!elements.overlay || !elements.modal || !elements.img || !elements.close) {
+                    console.warn('Gallery modal elements not found');
+                    return;
+                }
+                const galleryImages = [
+                    "https://readdy.ai/api/search-image?query=Artisanal%20ice%20cream%20shop%20interior%20with%20modern%20design%2C%20dark%20blue%20and%20purple%20lighting%2C%20elegant%20display%20case%20with%20various%20ice%20cream%20flavors%2C%20professional%20interior%20photography&width=1000&height=800&seq=8&orientation=landscape",
+                    "https://readdy.ai/api/search-image?query=Ice%20cream%20making%20process%2C%20chef%20preparing%20artisanal%20ice%20cream%20in%20professional%20kitchen%2C%20mixing%20ingredients%20in%20a%20machine%2C%20dark%20blue%20lighting%20accents%2C%20professional%20documentary%20photography&width=1000&height=800&seq=9&orientation=landscape",
+                    "https://readdy.ai/api/search-image?query=Elegant%20ice%20cream%20sundae%20in%20a%20glass%20bowl%20with%20multiple%20flavors%2C%20toppings%2C%20and%20decorative%20elements%2C%20served%20on%20a%20dark%20table%20with%20blue%20lighting%2C%20professional%20food%20photography&width=1000&height=800&seq=10&orientation=landscape",
+                    "https://readdy.ai/api/search-image?query=Close-up%20of%20ice%20cream%20scoops%20being%20served%20from%20a%20professional%20display%20case%2C%20various%20colors%20and%20flavors%2C%20elegant%20presentation%2C%20dark%20blue%20lighting%2C%20professional%20commercial%20photography&width=1000&height=800&seq=11&orientation=landscape",
+                    "https://readdy.ai/api/search-image?query=Fresh%20ingredients%20for%20ice%20cream%20making%20laid%20out%20on%20a%20dark%20surface%20-%20fruits%2C%20nuts%2C%20chocolate%2C%20vanilla%20beans%2C%20with%20blue%20lighting%20accents%2C%20professional%20food%20photography&width=1000&height=800&seq=12&orientation=landscape",
+                    "https://readdy.ai/api/search-image?query=Happy%20customers%20enjoying%20ice%20cream%20at%20an%20elegant%20ice%20cream%20parlor%2C%20social%20gathering%2C%20dark%20modern%20interior%20with%20blue%20and%20purple%20lighting%2C%20professional%20lifestyle%20photography&width=1000&height=800&seq=13&orientation=landscape"
+                ];
+                galleryItems.forEach((item, index) => {
+                    item.addEventListener('click', function () {
+                        modalImg.src = galleryImages[index];
+                        modalOverlay.classList.add('active');
+                        modal.classList.add('active');
+                    });
+                });
+                closeModal.addEventListener('click', function () {
+                    modalOverlay.classList.remove('active');
+                    modal.classList.remove('active');
+                });
+                modalOverlay.addEventListener('click', function (e) {
+                    if (e.target === modalOverlay) {
+                        modalOverlay.classList.remove('active');
+                        modal.classList.remove('active');
+                    }
+                });
+            } catch (error) {
+                console.warn('Error in navigation script:', error);
+            }
+        });
+    </script>
+    <script id="counter-animation-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                const counters = document.querySelectorAll('.counter-value');
+                if (!counters.length) {
+                    console.warn('Counter elements not found');
+                    return;
+                }
+                const animateCounters = () => {
+                    counters.forEach(counter => {
+                        const target = +counter.dataset.count;
+                        let current = 0;
+                        const increment = target / 100;
+                        const duration = 2000;
+                        const stepTime = duration / 100;
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.innerText = Math.floor(current);
+                                setTimeout(updateCounter, stepTime);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCounter();
+                    });
+                };
+                const counterSection = document.getElementById('estadisticas');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateCounters();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                observer.observe(counterSection);
+            } catch (error) {
+                console.warn('Error in navigation script:', error);
+            }
+        });
+    </script>
+    <script id="scroll-reveal-script">
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+                if (!scrollRevealElements.length) {
+                    console.warn('Scroll reveal elements not found');
+                    return;
+                }
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+                scrollRevealElements.forEach(element => {
+                    observer.observe(element);
+                });
+            } catch (error) {
+                console.warn('Error in navigation script:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
